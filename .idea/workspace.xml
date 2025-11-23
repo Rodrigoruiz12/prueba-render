@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb397a7f-9314-4655-8189-a867ead945af" name="Changes" comment="">
+    <list default="true" id="bb397a7f-9314-4655-8189-a867ead945af" name="Changes" comment="Se agrego el Endpoint de Estado, para comprobar que el gateway esta funcionando correctamente">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,12 +89,25 @@
       <workItem from="1763928362875" duration="8000" />
       <workItem from="1763928382636" duration="61000" />
       <workItem from="1763928456604" duration="439000" />
-      <workItem from="1763935778787" duration="295000" />
+      <workItem from="1763935778787" duration="2638000" />
     </task>
+    <task id="LOCAL-00001" summary="Se agrego el Endpoint de Estado, para comprobar que el gateway esta funcionando correctamente">
+      <option name="closed" value="true" />
+      <created>1763936345548</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1763936345548</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Se agrego el Endpoint de Estado, para comprobar que el gateway esta funcionando correctamente" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se agrego el Endpoint de Estado, para comprobar que el gateway esta funcionando correctamente" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
