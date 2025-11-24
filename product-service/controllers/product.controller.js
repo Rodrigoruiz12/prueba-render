@@ -1,46 +1,39 @@
+// Lógica para obtener productos (aquí asumo que obtienes datos de una DB o array)
+const DUMMY_PRODUCTS = [
+    { id: 1, name: "Control Xbox", price: 75000, image: "/img/xbox.webp", description: "Control inalámbrico..." },
+    { id: 2, name: "Auriculares Logitech", price: 60000, image: "/img/logi.jpeg", description: "Auriculares..." },
+    { id: 3, name: "Escritorio Cougar", price: 150000, image: "/img/cougar.avif", description: "Escritorio gamer..." },
+    // Añade más productos si es necesario o utiliza tu lógica de DB aquí.
+];
+
+// OBTENER TODOS LOS PRODUCTOS (Responde al catálogo principal)
 export const getAllProducts = (req, res) => {
-    // Aquí es donde llamas a la base de datos y devuelves el JSON.
-    // Si tu servicio está dando 404, asegúrate de que el código aquí
-    // esté configurado para devolver un JSON válido.
-
-    // Ejemplo de un array de prueba si la DB falla:
-    const testProducts = [{ id: 99, name: "Producto de Prueba", price: 1000, image: "/img/test.jpg" }];
-
-    // Si estás usando una función de base de datos asíncrona:
-    /*
-    try {
-        const products = await getProducts(); // Función de tu DB
-        return res.json(products);
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Error al obtener productos." });
-    }
-    */
-
-    // Si el error 404 persiste, prueba con una respuesta estática por ahora:
-    return res.json(testProducts);
+    // Si tu lógica de DB real falla en Render, esta línea garantiza que el 404 desaparezca
+    // y la conexión sea exitosa con un array de datos (aunque sean fijos).
+    return res.json(DUMMY_PRODUCTS);
 };
 
 // =============================================================
-// FUNCIONES CRUD REQUERIDAS POR EL ROUTER (Deben estar exportadas)
+// FUNCIONES CRUD REQUERIDAS POR EL ROUTER (Aseguramos la exportación)
+// Para evitar el error de importación, deben existir, aunque no tengan lógica.
 // =============================================================
 
 export const getProductById = (req, res) => {
-    // Lógica para obtener un producto por ID
-    return res.status(404).json({ message: "Not implemented yet" });
+    // Busca en la DB por req.params.id
+    return res.status(501).json({ message: "Obtener por ID no implementado" });
 };
 
 export const createProduct = (req, res) => {
     // Lógica para crear un producto
-    return res.status(501).json({ message: "Not implemented yet" });
+    return res.status(501).json({ message: "Crear producto no implementado" });
 };
 
 export const updateProduct = (req, res) => {
     // Lógica para actualizar un producto
-    return res.status(501).json({ message: "Not implemented yet" });
+    return res.status(501).json({ message: "Actualizar producto no implementado" });
 };
 
 export const deleteProduct = (req, res) => {
     // Lógica para eliminar un producto
-    return res.status(501).json({ message: "Not implemented yet" });
+    return res.status(501).json({ message: "Eliminar producto no implementado" });
 };

@@ -1,6 +1,5 @@
 import express from 'express';
-// Importamos las funciones del controlador. Si el error anterior era 'createProduct no existe',
-// es posible que tu controlador solo exporte las funciones para obtener datos.
+// Importamos todas las funciones del controlador
 import {
     getAllProducts,
     getProductById,
@@ -12,13 +11,13 @@ import {
 const router = express.Router();
 
 // ====================================================================
-// CORRECCIÓN CLAVE: Definimos la ruta raíz GET / para obtener todos.
+// CORRECCIÓN CLAVE: Definimos la ruta raíz GET / para que el Gateway la encuentre.
 // ====================================================================
 
-// 1. Ruta para OBTENER TODOS LOS PRODUCTOS (El Gateway envía "/" a este punto)
+// 1. Ruta para OBTENER TODOS LOS PRODUCTOS (Responde a GET /)
 router.get('/', getAllProducts);
 
-// 2. Rutas CRUD completas (para Admin y detalle)
+// 2. Rutas CRUD completas:
 router.get('/:id', getProductById);
 router.post('/', createProduct);
 router.put('/:id', updateProduct);
