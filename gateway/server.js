@@ -5,17 +5,11 @@ import proxy from 'express-http-proxy';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// =======================================================
-// Configuración de CORS y JSON
-// =======================================================
-// Permite que CUALQUIER origen (Vercel) llame al Gateway.
+// Configuración CORS: Permitir cualquier origen
 app.use(cors({ origin: '*' }));
-// Manejo de cuerpos JSON (necesario para POST/PUT/DELETE)
 app.use(express.json());
 
-// =======================================================
-// CONFIGURACIÓN DE MICROSERVICIOS (URLs y Proxy)
-// =======================================================
+// URLs de los Microservicios (Render Environment Variables)
 const PRODUCT_URL = process.env.PRODUCT_SERVICE_URL || 'http://localhost:3001';
 const LOGIN_URL = process.env.LOGIN_SERVICE_URL || 'http://localhost:3002';
 const USER_URL = process.env.USER_SERVICE_URL || 'http://localhost:3003';
@@ -23,7 +17,7 @@ const CART_URL = process.env.CART_SERVICE_URL || 'http://localhost:3004';
 const BLOG_URL = process.env.BLOG_SERVICE_URL || 'http://localhost:3005';
 
 
-// Endpoint de estado para verificar que el Gateway vive y ver sus dependencias
+// Endpoint de estado
 app.get('/api/status', (req, res) => {
     res.json({
         status: 'OK',
@@ -39,22 +33,30 @@ app.get('/api/status', (req, res) => {
     });
 });
 
+
 // ====================================================================================
-// CONFIGURACIÓN DE PROXIES CON REESCRITURA ESPECÍFICA
+// CORRECCIÓN FINAL DE PROXY: Reescritura estricta para Productos (Soluciona 404)
 // ====================================================================================
 
-// 1. PRODUCTOS: Reescritura estricta para el catálogo (la causa del 404)
+// Esta función genérica resuelve la mayoría de los conflictos: solo elimina /api
+const simplePathResolver = (req) => {
+    return req.originalUrl.replace('/api', '');
+};
+
+// Función específica para Productos (asumiendo que el Microservicio espera "/")
+const productsPathResolver = (req) => {
+    // Si la ruta es /api/products (sin nada más), la convierte en /
+    // Si la ruta es /api/products/123, la convierte en /123
+    return req.originalUrl.replace('/api/products', '') || '/';
+};
+
+
+// 1. PRODUCTOS: Usamos el resolver ESPECÍFICO para forzar la ruta raíz (/)
 app.use('/api/products', proxy(PRODUCT_URL, {
-    // CORRECCIÓN: Si el frontend pide /api/products, lo convierte en "".
-    // El '|| /' asegura que el resultado sea siempre "/" si la cadena está vacía.
-    // Esto es NECESARIO para que el microservicio que usa app.use('/', rutasProducto) responda.
-    proxyReqPathResolver: (req) => req.originalUrl.replace('/api/products', '') || '/'
+    proxyReqPathResolver: productsPathResolver
 }));
 
-// 2. OTROS SERVICIOS: Reescritura simple (solo elimina /api)
-// Esto envía /login, /users, /cart, /blog al microservicio.
-const simplePathResolver = (req) => req.originalUrl.replace('/api', '');
-
+// 2. OTROS SERVICIOS: Usamos el resolver general.
 app.use('/api/login', proxy(LOGIN_URL, {
     proxyReqPathResolver: simplePathResolver
 }));
