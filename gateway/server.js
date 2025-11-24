@@ -3,24 +3,44 @@ import cors from 'cors';
 import proxy from 'express-http-proxy';
 
 const app = express();
+// CORRECCIÓN 1: Agregado el operador || para el puerto por defecto
+const PORT = process.env.PORT || 3000;
+
 app.use(cors());
-app.use(express.json());
 
-// Endpoint de Estado (Health Check)
+// NOTA: No usamos app.use(express.json()) aquí globalmente porque puede
+// causar conflictos con el proxy al "consumir" el cuerpo de la petición antes de reenviarlo.
+
+// Endpoint de estado para verificar que el Gateway vive
 app.get('/api/status', (req, res) => {
-    res.json({
-        status: 'OK',
-        message: 'Servidor Gateway funcionando correctamente',
-        timestamp: new Date().toISOString()
-    });
+    res.json({ status: 'OK', service: 'Gateway', time: new Date().toISOString() });
 });
-// Redirigimos cada petición al microservicio correcto
-app.use('/api/products', proxy('http://localhost:3001')); // Al servicio de Productos
-app.use('/api/login', proxy('http://localhost:3002'));    // Al servicio de Login
-app.use('/api/users', proxy('http://localhost:3003'));    // Al servicio de Users (Admin)
-app.use('/api/cart', proxy('http://localhost:3004'));     // Al servicio de Carrito
-app.use('/api/blog', proxy('http://localhost:3005'));     // Al servicio de Blog
 
-app.listen(3000, () => {
-    console.log('API Gateway corriendo en http://localhost:3000');
+// Rutas a microservicios (fallback a localhost para desarrollo)
+// CORRECCIÓN 2: Agregados los operadores ||
+const productsUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:3001';
+const loginUrl    = process.env.LOGIN_SERVICE_URL   || 'http://localhost:3002';
+const usersUrl    = process.env.USER_SERVICE_URL    || 'http://localhost:3003';
+const cartUrl     = process.env.CART_SERVICE_URL    || 'http://localhost:3004';
+const blogUrl     = process.env.BLOG_SERVICE_URL    || 'http://localhost:3005';
+
+// CORRECCIÓN 3: Uso de comillas invertidas (template strings) para el log
+console.log(`Configurando rutas:
+  - Productos: ${productsUrl}
+  - Login: ${loginUrl}
+  - Users: ${usersUrl}
+  - Cart: ${cartUrl}
+  - Blog: ${blogUrl}`);
+
+// Configuración de Proxies
+// El proxy elimina la parte '/api/nombre' y manda el resto al microservicio.
+// Ejemplo: /api/products -> http://localhost:3001/
+app.use('/api/products', proxy(productsUrl));
+app.use('/api/login',    proxy(loginUrl));
+app.use('/api/users',    proxy(usersUrl));
+app.use('/api/cart',     proxy(cartUrl));
+app.use('/api/blog',     proxy(blogUrl));
+
+app.listen(PORT, () => {
+    console.log(`✅ API Gateway corriendo en puerto ${PORT}`);
 });

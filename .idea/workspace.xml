@@ -4,11 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bb397a7f-9314-4655-8189-a867ead945af" name="Changes" comment="Push prueba render" />
+    <list default="true" id="bb397a7f-9314-4655-8189-a867ead945af" name="Changes" comment="Push prueba render">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/node_modules/server.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/gateway/server.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package.json" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -25,6 +38,9 @@
     &quot;accountId&quot;: &quot;5821b306-0d47-42f1-8bf6-dd231ff647c1&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 4
@@ -87,7 +103,7 @@
       <workItem from="1763928362875" duration="8000" />
       <workItem from="1763928382636" duration="61000" />
       <workItem from="1763928456604" duration="439000" />
-      <workItem from="1763935778787" duration="5029000" />
+      <workItem from="1763935778787" duration="8642000" />
     </task>
     <task id="LOCAL-00001" summary="Se agrego el Endpoint de Estado, para comprobar que el gateway esta funcionando correctamente">
       <option name="closed" value="true" />
@@ -161,7 +177,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763941686917</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Push prueba render">
+      <option name="closed" value="true" />
+      <created>1763941821187</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1763941821187</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -1,0 +1,17 @@
+{
+  "name": "perifericos-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lobyte2/perifericos-backend.git"
+  },
+  "private": true,
+  "dependencies": {
+    "express-http-proxy": "^2.1.2"
+  }
+}
