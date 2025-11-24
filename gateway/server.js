@@ -35,39 +35,35 @@ app.get('/api/status', (req, res) => {
 
 
 // ====================================================================================
-// CORRECCIÓN FINAL DE PROXY: Reescritura estricta para Productos (Soluciona 404)
+// CORRECCIÓN FINAL DE PROXY: Reescritura basada en req.url
 // ====================================================================================
 
-// Esta función genérica resuelve la mayoría de los conflictos: solo elimina /api
-const simplePathResolver = (req) => {
-    return req.originalUrl.replace('/api', '');
+// Esta función es la más robusta: toma la URL de la petición (ej. /api/products)
+// y devuelve solo la parte que el microservicio espera (ej. /products)
+const finalPathResolver = (req) => {
+    // Si la URL es /api/products/123, queremos enviar /products/123
+    // Si la URL es /api/login, queremos enviar /login
+    // Usamos req.url que es el path sin el host.
+    return req.url.replace('/api', '');
 };
 
-// Función específica para Productos (asumiendo que el Microservicio espera "/")
-const productsPathResolver = (req) => {
-    // Si la ruta es /api/products (sin nada más), la convierte en /
-    // Si la ruta es /api/products/123, la convierte en /123
-    return req.originalUrl.replace('/api/products', '') || '/';
-};
-
-
-// 1. PRODUCTOS: Usamos el resolver ESPECÍFICO para forzar la ruta raíz (/)
+// 1. PRODUCTOS: Usamos el resolver genérico. Envía /products o /products/123
 app.use('/api/products', proxy(PRODUCT_URL, {
-    proxyReqPathResolver: productsPathResolver
+    proxyReqPathResolver: finalPathResolver
 }));
 
-// 2. OTROS SERVICIOS: Usamos el resolver general.
+// 2. OTROS SERVICIOS: Usamos el resolver genérico.
 app.use('/api/login', proxy(LOGIN_URL, {
-    proxyReqPathResolver: simplePathResolver
+    proxyReqPathResolver: finalPathResolver
 }));
 app.use('/api/users', proxy(USER_URL, {
-    proxyReqPathResolver: simplePathResolver
+    proxyReqPathResolver: finalPathResolver
 }));
 app.use('/api/cart', proxy(CART_URL, {
-    proxyReqPathResolver: simplePathResolver
+    proxyReqPathResolver: finalPathResolver
 }));
 app.use('/api/blog', proxy(BLOG_URL, {
-    proxyReqPathResolver: simplePathResolver
+    proxyReqPathResolver: finalPathResolver
 }));
 
 
