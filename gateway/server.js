@@ -26,11 +26,11 @@ const BLOG_URL = process.env.BLOG_SERVICE_URL || 'http://localhost:3005';
 
 // CORRECCIÓN 3: Uso de comillas invertidas (template strings) para el log
 console.log(`Configurando rutas:
-  - Productos: ${productsUrl}
-  - Login: ${loginUrl}
-  - Users: ${usersUrl}
-  - Cart: ${cartUrl}
-  - Blog: ${blogUrl}`);
+  - Productos: ${PRODUCT_URL}
+  - Login: ${LOGIN_URL}
+  - Users: ${USER_URL}
+  - Cart: ${CART_URL}
+  - Blog: ${BLOG_URL}`);
 
 // Configuración de Proxies
 // El proxy elimina la parte '/api/nombre' y manda el resto al microservicio.
@@ -42,5 +42,5 @@ app.use('/api/cart', proxy(CART_URL));
 app.use('/api/blog', proxy(BLOG_URL));
 
 app.listen(PORT, () => {
-    console.log(`✅ API Gateway corriendo en puerto ${PORT}`);
+    console.log(`API Gateway corriendo en el puerto ${PORT}`);
 });
