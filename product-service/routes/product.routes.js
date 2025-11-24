@@ -1,19 +1,19 @@
-// Capa de Rutas: Define los endpoints para productos.
-import { Router } from 'express';
-import {
-    obtenerTodosLosProductos,
-    obtenerProductoPorId,
-    crearProducto,
-    actualizarProducto,
-    eliminarProducto
-} from '../controllers/product.controller.js';
+import express from 'express';
+import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from '../controllers/product.controller.js'; // Ajusta el path si es necesario
 
-const router = Router();
+const router = express.Router();
 
-router.get('/', obtenerTodosLosProductos);
-router.get('/:id', obtenerProductoPorId);
-router.post('/', crearProducto);
-router.put('/:id', actualizarProducto);
-router.delete('/:id', eliminarProducto);
+// ====================================================================
+// CORRECCIÓN: Definimos la ruta raíz GET / para que el Gateway la encuentre
+// ====================================================================
+
+// Ruta para OBTENER TODOS LOS PRODUCTOS (Responde a GET /)
+router.get('/', getAllProducts);
+
+// Rutas para productos individuales
+router.get('/:id', getProductById);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
 
 export default router;
