@@ -1,7 +1,6 @@
 import express from 'express';
-// CORRECCIÓN: SOLO IMPORTAMOS LO QUE EL CONTROLADOR REALMENTE EXPORTA
-// Si solo tiene la función para obtener todos, usamos esa.
-// Asumo que tienes al menos: getAllProducts, getProductById, createProduct, deleteProduct
+// Importamos las funciones del controlador. Si el error anterior era 'createProduct no existe',
+// es posible que tu controlador solo exporte las funciones para obtener datos.
 import {
     getAllProducts,
     getProductById,
@@ -13,14 +12,13 @@ import {
 const router = express.Router();
 
 // ====================================================================
-// CORRECCIÓN: Definimos la ruta raíz GET / para que el Gateway la encuentre.
-// El Gateway ya está enviando "/" al Product Service para el catálogo principal.
+// CORRECCIÓN CLAVE: Definimos la ruta raíz GET / para obtener todos.
 // ====================================================================
 
-// 1. Ruta para OBTENER TODOS LOS PRODUCTOS (Responde a GET /)
+// 1. Ruta para OBTENER TODOS LOS PRODUCTOS (El Gateway envía "/" a este punto)
 router.get('/', getAllProducts);
 
-// 2. Rutas CRUD completas:
+// 2. Rutas CRUD completas (para Admin y detalle)
 router.get('/:id', getProductById);
 router.post('/', createProduct);
 router.put('/:id', updateProduct);
