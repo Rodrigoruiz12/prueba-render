@@ -1,16 +1,26 @@
 import express from 'express';
-import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from '../controllers/product.controller.js'; // Ajusta el path si es necesario
+// CORRECCIÓN: SOLO IMPORTAMOS LO QUE EL CONTROLADOR REALMENTE EXPORTA
+// Si solo tiene la función para obtener todos, usamos esa.
+// Asumo que tienes al menos: getAllProducts, getProductById, createProduct, deleteProduct
+import {
+    getAllProducts,
+    getProductById,
+    createProduct,
+    updateProduct,
+    deleteProduct
+} from '../controllers/product.controller.js';
 
 const router = express.Router();
 
 // ====================================================================
-// CORRECCIÓN: Definimos la ruta raíz GET / para que el Gateway la encuentre
+// CORRECCIÓN: Definimos la ruta raíz GET / para que el Gateway la encuentre.
+// El Gateway ya está enviando "/" al Product Service para el catálogo principal.
 // ====================================================================
 
-// Ruta para OBTENER TODOS LOS PRODUCTOS (Responde a GET /)
+// 1. Ruta para OBTENER TODOS LOS PRODUCTOS (Responde a GET /)
 router.get('/', getAllProducts);
 
-// Rutas para productos individuales
+// 2. Rutas CRUD completas:
 router.get('/:id', getProductById);
 router.post('/', createProduct);
 router.put('/:id', updateProduct);
