@@ -1,18 +1,19 @@
 import express from 'express';
-import cors from 'cors';
-import rutasProducto from './routes/product.routes.js';
+import { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct } from '../controllers/product.controller.js'; // Ajusta el path si es necesario
 
-const app = express();
-// CORRECCIÓN CLAVE: Usar process.env.PORT para que Render pueda asignar un puerto
-const PORT = process.env.PORT || 3001;
+const router = express.Router();
 
-app.use(cors());
-app.use(express.json());
+// ====================================================================
+// CORRECCIÓN: Definimos la ruta raíz GET / para que el Gateway la encuentre
+// ====================================================================
 
-// Las rutas de productos están montadas en la raíz del microservicio
-app.use('/', rutasProducto);
+// Ruta para OBTENER TODOS LOS PRODUCTOS (Responde a GET /)
+router.get('/', getAllProducts);
 
-app.listen(PORT, () => {
-    // Render usará el puerto asignado
-    console.log(`Servicio de Productos corriendo en el puerto ${PORT}`);
-});
+// Rutas para productos individuales
+router.get('/:id', getProductById);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
+
+export default router;
