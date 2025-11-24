@@ -6,15 +6,11 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // =======================================================
-// CORRECCIÓN CLAVE: Configuración de CORS
-// Permitimos que CUALQUIER origen (incluyendo Vercel) pueda llamar al Gateway.
-// Esto soluciona los errores de bloqueo del navegador.
+// Configuración de CORS y JSON
 // =======================================================
+// Permite que CUALQUIER origen (Vercel) llame al Gateway.
 app.use(cors({ origin: '*' }));
-
-// Nota: Para peticiones POST/PUT, los cuerpos deben ser manejados.
-// Lo incluimos aquí solo para asegurar que Express pueda leer JSON en las rutas
-// que no son proxy, y en el caso de que el proxy lo necesite.
+// Manejo de cuerpos JSON (necesario para POST/PUT/DELETE)
 app.use(express.json());
 
 // =======================================================
@@ -26,13 +22,6 @@ const USER_URL = process.env.USER_SERVICE_URL || 'http://localhost:3003';
 const CART_URL = process.env.CART_SERVICE_URL || 'http://localhost:3004';
 const BLOG_URL = process.env.BLOG_SERVICE_URL || 'http://localhost:3005';
 
-// Función para reescribir la ruta y eliminar el prefijo '/api'
-// Esto asegura que /api/products/123 se convierta en /123 (o /products/123 si el microservicio usa el prefijo /products)
-const customPathResolver = (req) => {
-    // Si tu frontend llama a /api/products, el microservicio sólo ve lo que sigue.
-    // Usamos el reemplazo simple de '/api' para que el microservicio reciba la ruta esperada.
-    return req.originalUrl.replace('/api', '');
-};
 
 // Endpoint de estado para verificar que el Gateway vive y ver sus dependencias
 app.get('/api/status', (req, res) => {
@@ -50,12 +39,35 @@ app.get('/api/status', (req, res) => {
     });
 });
 
-// Configuración de Proxies con reescritura de ruta
-app.use('/api/products', proxy(PRODUCT_URL, { proxyReqPathResolver: customPathResolver }));
-app.use('/api/login', proxy(LOGIN_URL, { proxyReqPathResolver: customPathResolver }));
-app.use('/api/users', proxy(USER_URL, { proxyReqPathResolver: customPathResolver }));
-app.use('/api/cart', proxy(CART_URL, { proxyReqPathResolver: customPathResolver }));
-app.use('/api/blog', proxy(BLOG_URL, { proxyReqPathResolver: customPathResolver }));
+// ====================================================================================
+// CONFIGURACIÓN DE PROXIES CON REESCRITURA ESPECÍFICA
+// ====================================================================================
+
+// 1. PRODUCTOS: Reescritura estricta para el catálogo (la causa del 404)
+app.use('/api/products', proxy(PRODUCT_URL, {
+    // CORRECCIÓN: Si el frontend pide /api/products, lo convierte en "".
+    // El '|| /' asegura que el resultado sea siempre "/" si la cadena está vacía.
+    // Esto es NECESARIO para que el microservicio que usa app.use('/', rutasProducto) responda.
+    proxyReqPathResolver: (req) => req.originalUrl.replace('/api/products', '') || '/'
+}));
+
+// 2. OTROS SERVICIOS: Reescritura simple (solo elimina /api)
+// Esto envía /login, /users, /cart, /blog al microservicio.
+const simplePathResolver = (req) => req.originalUrl.replace('/api', '');
+
+app.use('/api/login', proxy(LOGIN_URL, {
+    proxyReqPathResolver: simplePathResolver
+}));
+app.use('/api/users', proxy(USER_URL, {
+    proxyReqPathResolver: simplePathResolver
+}));
+app.use('/api/cart', proxy(CART_URL, {
+    proxyReqPathResolver: simplePathResolver
+}));
+app.use('/api/blog', proxy(BLOG_URL, {
+    proxyReqPathResolver: simplePathResolver
+}));
+
 
 // Log de configuración
 console.log(`Configurando rutas:
