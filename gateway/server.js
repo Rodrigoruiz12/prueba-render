@@ -18,11 +18,11 @@ app.get('/api/status', (req, res) => {
 
 // Rutas a microservicios (fallback a localhost para desarrollo)
 // CORRECCIÓN 2: Agregados los operadores ||
-const productsUrl = process.env.PRODUCT_SERVICE_URL || 'http://localhost:3001';
-const loginUrl    = process.env.LOGIN_SERVICE_URL   || 'http://localhost:3002';
-const usersUrl    = process.env.USER_SERVICE_URL    || 'http://localhost:3003';
-const cartUrl     = process.env.CART_SERVICE_URL    || 'http://localhost:3004';
-const blogUrl     = process.env.BLOG_SERVICE_URL    || 'http://localhost:3005';
+const PRODUCT_URL = process.env.PRODUCT_SERVICE_URL || 'http://localhost:3001';
+const LOGIN_URL = process.env.LOGIN_SERVICE_URL || 'http://localhost:3002';
+const USER_URL = process.env.USER_SERVICE_URL || 'http://localhost:3003';
+const CART_URL = process.env.CART_SERVICE_URL || 'http://localhost:3004';
+const BLOG_URL = process.env.BLOG_SERVICE_URL || 'http://localhost:3005';
 
 // CORRECCIÓN 3: Uso de comillas invertidas (template strings) para el log
 console.log(`Configurando rutas:
@@ -35,11 +35,11 @@ console.log(`Configurando rutas:
 // Configuración de Proxies
 // El proxy elimina la parte '/api/nombre' y manda el resto al microservicio.
 // Ejemplo: /api/products -> http://localhost:3001/
-app.use('/api/products', proxy(productsUrl));
-app.use('/api/login',    proxy(loginUrl));
-app.use('/api/users',    proxy(usersUrl));
-app.use('/api/cart',     proxy(cartUrl));
-app.use('/api/blog',     proxy(blogUrl));
+app.use('/api/products', proxy(PRODUCT_URL));
+app.use('/api/login', proxy(LOGIN_URL));
+app.use('/api/users', proxy(USER_URL));
+app.use('/api/cart', proxy(CART_URL));
+app.use('/api/blog', proxy(BLOG_URL));
 
 app.listen(PORT, () => {
     console.log(`✅ API Gateway corriendo en puerto ${PORT}`);
